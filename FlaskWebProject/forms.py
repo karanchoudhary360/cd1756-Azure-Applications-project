@@ -1,19 +1,22 @@
-
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired
-from wtforms.widgets import TextArea
+from flask_wtf.file import FileAllowed, FileField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Length
+
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    username = StringField("Username", validators=[DataRequired(), Length(max=64)])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember_me = BooleanField("Remember Me")
+    submit = SubmitField("Sign In")
+
 
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    author = StringField('Author', validators=[DataRequired()])
-    body = TextAreaField('Body', validators=[DataRequired()])
-    image_path = FileField('Image', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
-    submit = SubmitField('Save')
+    title = StringField("Title", validators=[DataRequired(), Length(max=150)])
+    author = StringField("Author", validators=[DataRequired(), Length(max=75)])
+    body = TextAreaField("Body", validators=[DataRequired(), Length(max=800)])
+    image_path = FileField(
+        "Image",
+        validators=[FileAllowed(["jpg", "jpeg", "png"], "Only JPG and PNG images are allowed.")],
+    )
+    submit = SubmitField("Save")
